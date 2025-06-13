@@ -1,103 +1,78 @@
-import Image from "next/image";
+"use client"
+
+import Header from './components/Header'
+import SVGLogo from './components/SVGLogo'
+import { useEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const aboutRef = useRef(null)
+  const projectsRef = useRef(null)
+  const contactRef = useRef(null)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+
+    const sections = [aboutRef, projectsRef, contactRef]
+    sections.forEach((ref) => {
+      if (!ref.current) return
+      gsap.from(ref.current, {
+        scrollTrigger: {
+          trigger: ref.current,
+          start: 'top 80%',
+        },
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: 'power3.out',
+      })
+    })
+  }, [])
+
+  return (
+    <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+      <Header />
+
+      {/* Hero Section */}
+      <section className="min-h-screen flex flex-col items-center justify-center p-10 text-center">
+        <SVGLogo />
+        <h1 className="text-5xl font-bold mt-6">Welcome to My Portfolio</h1>
+        <p className="text-xl text-gray-600 dark:text-gray-300 mt-2">Built with Next.js, Tailwind, and GSAP</p>
+      </section>
+
+      {/* About */}
+      <section ref={aboutRef} className="min-h-screen p-10 bg-gray-100 dark:bg-gray-800">
+        <h2 className="text-4xl font-bold mb-4">About Me</h2>
+        <p className="max-w-2xl text-gray-700 dark:text-gray-300">
+          프론트엔드 개발자로서 사용자 중심의 UI와 애니메이션을 구현합니다. Tailwind와 GSAP을 좋아합니다.
+        </p>
+      </section>
+
+      {/* Projects */}
+      <section ref={projectsRef} className="min-h-screen p-10 bg-gray-200 dark:bg-gray-700">
+        <h2 className="text-4xl font-bold mb-4">Projects</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white dark:bg-gray-600 p-6 rounded shadow">
+            <h3 className="text-2xl font-semibold">Project A</h3>
+            <p>React 기반 SPA 포트폴리오 웹사이트</p>
+          </div>
+          <div className="bg-white dark:bg-gray-600 p-6 rounded shadow">
+            <h3 className="text-2xl font-semibold">Project B</h3>
+            <p>GSAP과 Next.js로 만든 인터랙티브 앱</p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
+      </section>
+
+      {/* Contact */}
+      <section ref={contactRef} className="min-h-screen p-10 bg-gray-100 dark:bg-gray-800">
+        <h2 className="text-4xl font-bold mb-4">Contact</h2>
+        <p className="text-gray-600 dark:text-gray-300 mb-2">이메일로 연락주세요:</p>
+        <a className="text-blue-500 underline" href="mailto:you@example.com">
+          you@example.com
         </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </section>
+    </main>
+  )
 }
